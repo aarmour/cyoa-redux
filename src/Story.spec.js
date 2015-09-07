@@ -17,6 +17,6 @@ describe('new Story', () => {
 
   it('should have a description', () => {
     expect((new Story({ description: 'FooBar' })).description).to.be('FooBar');
-  })
+  });
 
 });
