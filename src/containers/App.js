@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import ScenarioEditor from '../components/ScenarioEditor';
+import Header from '../components/Header';
+import { Link } from 'react-router';
 
 export default class App extends Component {
+
   render() {
     return (
       <div>
-        <ScenarioEditor />
+        <Header />
+        {this.props.children}
       </div>
     );
   }
+
 }
