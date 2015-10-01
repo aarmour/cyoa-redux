@@ -23,3 +23,27 @@ export function loadStories() {
     return dispatch(fetchStories());
   };
 }
+
+export const STORY_REQUEST = 'STORY_REQUEST';
+export const STORY_SUCCESS = 'STORY_SUCCESS';
+export const STORY_FAILURE = 'STORY_FAILURE';
+
+function fetchStory(id) {
+  return {
+    [CALL_API]: {
+      types: [STORY_REQUEST, STORY_SUCCESS, STORY_FAILURE],
+      endpoint: `stories/${id}`,
+      schema: Schemas.STORY
+    }
+  };
+}
+
+export function loadStory(id) {
+  return (dispatch, getState) => {
+    const story = getState().currentStory;
+
+    if (story && story.id === id) return null;
+
+    return dispatch(fetchStory(id));
+  }
+}
