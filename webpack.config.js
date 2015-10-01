@@ -1,14 +1,26 @@
 'use strict';
 
+var webpack = require('webpack');
+
 module.exports = {
-  entry: './src/App.js',
+  devtool: 'cheap-module-eval-source-map',
+  entry: [
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server',
+    './index'
+  ],
   output: {
     path: __dirname + '/dist',
-    filename: 'app.js'
+    filename: 'cyoa-redux.js',
+    publicPath: '/static/'
   },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
   module: {
     loaders: [
-      { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ }
+      { test: /\.js$/, loaders: ['babel'], exclude: /node_modules/ },
+      { test: /\.json$/, loaders: ['json'] }
     ]
   }
 };
