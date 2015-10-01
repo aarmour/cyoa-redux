@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import MarkdownEditor from 'react-md-editor';
 import MarkdownPreview from './MarkdownPreview';
 import uniqueId from 'lodash.uniqueid';
@@ -7,7 +7,7 @@ export default class ScenarioEditor extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { markdown: '', showPreview: true };
+    this.state = { markdown: props.initialContent, showPreview: true };
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleShowPreviewChange = this.handleShowPreviewChange.bind(this);
   }
@@ -21,8 +21,11 @@ export default class ScenarioEditor extends Component {
   }
 
   render() {
-    const markdown = this.state.markdown;
+    const { markdown, showPreview } = this.state;
     const showPreviewChkId = uniqueId();
+    const handleEditorChange = this.handleEditorChange;
+    const handleShowPreviewChange = this.handleShowPreviewChange;
+
     let preview;
 
     if (this.state.showPreview) {
@@ -35,13 +38,22 @@ export default class ScenarioEditor extends Component {
       <div>
         <input type="text" placeholder="Title" />
         <input type="checkbox" id={showPreviewChkId}
-          checked={this.state.showPreview}
-          onChange={this.handleShowPreviewChange} />
+          checked={showPreview}
+          onChange={handleShowPreviewChange} />
         <label htmlFor={showPreviewChkId}>Show preview</label>
-        <MarkdownEditor value={this.state.markdown} onChange={this.handleEditorChange} />
+        <MarkdownEditor value={markdown} onChange={handleEditorChange} />
         {preview}
       </div>
     );
   }
 
 }
+
+ScenarioEditor.propTypes = {
+  initialContent: PropTypes.string,
+  onSave: PropTypes.func
+};
+
+ScenarioEditor.defaultProps = {
+  initialContent: ''
+};
