@@ -1,9 +1,25 @@
-export const SELECT_SCENARIO = 'SELECT_SCENARIO';
-export const DESTROY_SCENARIO = 'DESTROY_SCENARIO';
+import { CALL_API, Schemas } from '../middleware/localstorage-api';
 
-export const ADD_CHILD_SCENARIO = 'ADD_CHILD_SCENARIO';
-export const REMOVE_CHILD_SCENARIO = 'REMOVE_CHILD_SCENARIO';
+export const STORIES_REQUEST = 'STORIES_REQUEST';
+export const STORIES_SUCCESS = 'STORIES_SUCCESS';
+export const STORIES_FAILURE = 'STORIES_FAILURE';
 
-export function addChildScenario(scenario) {
+function fetchStories() {
+  return {
+    [CALL_API]: {
+      types: [STORIES_REQUEST, STORIES_SUCCESS, STORIES_FAILURE],
+      endpoint: 'stories',
+      schema: Schemas.STORY_ARRAY
+    }
+  };
+}
 
+export function loadStories() {
+  return (dispatch, getState) => {
+    const stories = getState().stories;
+
+    if (typeof stories !== 'undefined') return null;
+
+    return dispatch(fetchStories());
+  };
 }

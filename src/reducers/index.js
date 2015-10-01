@@ -1,17 +1,18 @@
 import * as ActionTypes from '../actions';
+import merge from 'lodash.merge';
 import { combineReducers } from 'redux';
 
-function title(state = 'My Story', action) {
-  switch (action.type) {
-    case ActionTypes.UPDATE_TITLE:
-      return state;
-    default:
-      return state;
+// Updates an entity cache in response to any action with response.entities.
+function entities(state = {}, action) {
+  if (action.response && action.response.entities) {
+    return merge({}, state, action.response.entities);
   }
+
+  return state;
 }
 
 const rootReducer = combineReducers({
-  title
+  entities
 });
 
 export default rootReducer;

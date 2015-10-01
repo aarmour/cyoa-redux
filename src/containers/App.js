@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { Link } from 'react-router';
 
-export default class App extends Component {
+class App extends Component {
 
   render() {
     return (
@@ -14,3 +15,9 @@ export default class App extends Component {
   }
 
 }
+
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps)(App);

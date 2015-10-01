@@ -7,6 +7,7 @@ import App from './App';
 
 // Pages
 import ListStoriesPage from './stories/ListStoriesPage';
+import ShowStoryPage from './stories/ShowStoryPage';
 import EditStoryPage from './stories/EditStoryPage';
 import EditScenarioPage from './stories/EditScenarioPage';
 
@@ -25,6 +26,8 @@ export default class Root extends Component {
                      component={ListStoriesPage} />
               <Route path="stories/new"
                      component={EditStoryPage} />
+              <Route path="stories/:storyId"
+                     component={ShowStoryPage} />
               <Route path="stories/:storyId/edit"
                      component={EditStoryPage} />
               <Route path="stories/:storyId/scenarios/:scenarioId/edit"
