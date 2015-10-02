@@ -49,7 +49,7 @@ ListStoriesPage.defaultProps = {
 };
 
 function mapStateToProps(state) {
-  const stories = state.entities.story;
+  const stories = state.entities.stories;
 
   return {
     stories

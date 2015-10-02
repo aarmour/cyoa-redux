@@ -52,7 +52,7 @@ function callApi(endpoint, method = 'GET', schema, entity) {
   }
 }
 
-const storySchema = new Schema('story', {
+const storySchema = new Schema('stories', {
   idAttribute: 'id'
 });
 

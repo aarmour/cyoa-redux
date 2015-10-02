@@ -5,7 +5,6 @@ import FormGroupTextarea from './forms/FormGroupTextarea';
 export default class StoryEditor extends Component {
 
   constructor(props) {
-    console.log('StoryEditor ctor:', props);
     super(props);
     this.state = { title: props.initialTitle, description: props.initialDescription };
     this.handleSubmit = this.handleSubmit.bind(this);

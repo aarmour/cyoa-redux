@@ -56,12 +56,12 @@ EditStoryPage.defaultProps = {
 
 function mapStateToProps(state, ownProps) {
   const {
-    entities: { story }
+    entities: { stories }
   } = state;
 
-  if (typeof story === 'undefined') return {};
+  if (typeof stories === 'undefined') return {};
 
-  const currentStory = story[ownProps.params.storyId];
+  const currentStory = stories[ownProps.params.storyId];
 
   if (typeof currentStory === 'undefined') return {};
 
