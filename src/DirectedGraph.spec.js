@@ -42,7 +42,7 @@ describe('.removeEdge(source, target)', () => {
 
 });
 
-describe('.getEdgesOf(vertex)', function () {
+describe('.getEdgesOf(vertex)', () => {
 
   it('should return an empty collection if the vertex is not in the graph', () => {
     let graph = new DirectedGraph();
@@ -62,6 +62,25 @@ describe('.getEdgesOf(vertex)', function () {
     expect(edges.size).to.be(2);
     expect(Array.from(edges)[0]).to.eql({ source: 1, target: 2 });
     expect(Array.from(edges)[1]).to.eql({ source: 1, target: 3 });
+  });
+
+});
+
+describe('serialization', () => {
+
+  it('should be serializable', () => {
+    const graph = new DirectedGraph();
+    const src = { foo: 'bar' };
+    const target = { bar: 'baz' };
+    const target2 = { baz: 'qux' };
+
+    graph.addEdge(src, target);
+    graph.addEdge(src, target2);
+
+    const json = JSON.stringify(graph);
+    const graph2 = DirectedGraph.deserialize(json);
+
+    expect(graph2.edgeCount).to.be(2);
   });
 
 });

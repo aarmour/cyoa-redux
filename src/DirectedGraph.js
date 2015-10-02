@@ -40,4 +40,32 @@ export default class DirectedGraph {
     return edges;
   }
 
+  toJSON() {
+    const m = new Map();
+
+    for (let [k, v] of this.vertices_.entries()) {
+      m.set(k, Array.from(v.entries()));
+    }
+
+    return Array.from(m.entries());
+  }
+
+  static deserialize(json) {
+    if (typeof json === 'string') {
+      json = JSON.parse(json);
+    }
+
+    const m = new Map(json);
+
+    for (let [k, v] of m.entries()) {
+      m.set(k, new Set(v));
+    }
+
+    const graph = new DirectedGraph();
+
+    graph.vertices_ = m;
+
+    return graph;
+  }
+
 }
