@@ -38,10 +38,14 @@ function mapStateToProps(state, ownProps) {
     entities: { story }
   } = state;
 
-  if (typeof story === 'undefined') return state;
+  if (typeof story === 'undefined') return {};
+
+  const currentStory = story[ownProps.params.storyId];
+
+  if (typeof currentStory === 'undefined') return {};
 
   return {
-    story: story[ownProps.params.storyId]
+    story: currentStory
   };
 }
 

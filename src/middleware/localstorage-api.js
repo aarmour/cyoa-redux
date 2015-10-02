@@ -22,9 +22,8 @@ function callApi(endpoint, method = 'GET', schema, entity) {
   if (method === 'POST' || method === 'PUT') {
     let path = endpointToPath(endpoint);
     const id = (method === 'POST' ? uniqueId() : entity.id);
-    const decamelizedEntity = decamelizeKeys(entity);
-
-    delete decamelizedEntity.id;
+    entity = Object.assign({}, entity, { id: id });
+    const decamelizedEntity = Object.assign({}, decamelizeKeys(entity));
 
     if (method === 'PUT') {
       // Remove the id from the path
@@ -34,7 +33,7 @@ function callApi(endpoint, method = 'GET', schema, entity) {
     data = merge({}, data, set({}, path, { [id]: decamelizedEntity }));
     localStorage.setItem('entities', JSON.stringify(data));
 
-    return Object.assign({}, normalize(entity, schema), { id: id });
+    return Object.assign({}, normalize(entity, schema));
   } else {
     let entities = get(data, endpointToPath(endpoint));
 
