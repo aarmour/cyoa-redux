@@ -1,5 +1,8 @@
 import { Schema, arrayOf, normalize } from 'normalizr';
 import { camelizeKeys, decamelizeKeys } from 'humps';
+import get from 'lodash.get';
+import set from 'lodash.set';
+import merge from 'lodash.merge';
 
 function uniqueId() {
   const id = Number.parseInt(localStorage.getItem('current_id') || 1);
@@ -9,39 +12,44 @@ function uniqueId() {
   return id;
 }
 
-function endpointToLocalStorageKey(endpoint) {
-  return endpoint.replace('/', '_');
+function endpointToPath(endpoint) {
+  return endpoint.replace('/', '.');
 }
 
 function callApi(endpoint, method = 'GET', schema, entity) {
-  let key = endpointToLocalStorageKey(endpoint);
+  let data = JSON.parse(localStorage.getItem('entities') || '{}');
 
   if (method === 'POST' || method === 'PUT') {
-    let data;
+    let path = endpointToPath(endpoint);
+    const id = (method === 'POST' ? uniqueId() : entity.id);
+    const decamelizedEntity = decamelizeKeys(entity);
 
-    if (method === 'POST') {
-      const newId = uniqueId();
+    delete decamelizedEntity.id;
 
-      key = `${key}_${newId}`;
-      data = Object.assign({}, entity, { id: newId });
-    } else {
-      data = Object.assign({}, entity);
+    if (method === 'PUT') {
+      // Remove the id from the path
+      path = path.split('.').slice(0, -1).join('.');
     }
 
-    const decamelizedData = decamelizeKeys(data);
+    data = merge({}, data, set({}, path, { [id]: decamelizedEntity }));
+    localStorage.setItem('entities', JSON.stringify(data));
 
-    localStorage.setItem(key, JSON.stringify(decamelizedData));
-
-    return Object.assign({}, normalize(data, schema));
+    return Object.assign({}, normalize(entity, schema), { id: id });
   } else {
-    const item = localStorage.getItem(key);
+    let entities = get(data, endpointToPath(endpoint));
 
-    if (!item) return;
+    if (!entities) return null;
 
-    const json = JSON.parse(item);
-    const camelizedJson = camelizeKeys(json);
+    const endpointParts = endpoint.split('/');
+    const isArray = !Number.isInteger(Number.parseInt(endpointParts[endpointParts.length - 1]));
 
-    return Object.assign({}, normalize(camelizedJson, schema));
+    if (isArray) {
+      entities = Object.keys(entities).map(k => Object.assign({}, entities[k], { id: k }));
+    }
+
+    const camelizedEntities = camelizeKeys(entities);
+
+    return Object.assign({}, normalize(camelizedEntities, schema));
   }
 }
 
