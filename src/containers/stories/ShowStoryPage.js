@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { loadStory } from '../../actions';
 
@@ -9,10 +10,12 @@ class ShowStoryPage extends Component {
   }
 
   render() {
-    const { title, description } = this.props.story;
+    const { id, title, description } = this.props.story;
+    const editPath = `/stories/${id}/edit`;
 
     return (
       <div>
+        <Link to={editPath}>Edit</Link>
         <h3>{title}</h3>
         <p>{description}</p>
       </div>

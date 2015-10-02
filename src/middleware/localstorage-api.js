@@ -1,20 +1,48 @@
 import { Schema, arrayOf, normalize } from 'normalizr';
-import { camelizeKeys } from 'humps';
+import { camelizeKeys, decamelizeKeys } from 'humps';
+
+function uniqueId() {
+  const id = Number.parseInt(localStorage.getItem('current_id') || 1);
+
+  localStorage.setItem('current_id', id + 1);
+
+  return id;
+}
 
 function endpointToLocalStorageKey(endpoint) {
   return endpoint.replace('/', '_');
 }
 
-function callApi(endpoint, schema) {
-  const key = endpointToLocalStorageKey(endpoint);
-  const item = localStorage.getItem(key);
+function callApi(endpoint, method = 'GET', schema, entity) {
+  let key = endpointToLocalStorageKey(endpoint);
 
-  if (!item) return;
+  if (method === 'POST' || method === 'PUT') {
+    let data;
 
-  const json = JSON.parse(item);
-  const camelizedJson = camelizeKeys(json);
+    if (method === 'POST') {
+      const newId = uniqueId();
 
-  return Object.assign({}, normalize(camelizedJson, schema));
+      key = `${key}_${newId}`;
+      data = Object.assign({}, entity, { id: newId });
+    } else {
+      data = Object.assign({}, entity);
+    }
+
+    const decamelizedData = decamelizeKeys(data);
+
+    localStorage.setItem(key, JSON.stringify(decamelizedData));
+
+    return Object.assign({}, normalize(data, schema));
+  } else {
+    const item = localStorage.getItem(key);
+
+    if (!item) return;
+
+    const json = JSON.parse(item);
+    const camelizedJson = camelizeKeys(json);
+
+    return Object.assign({}, normalize(camelizedJson, schema));
+  }
 }
 
 const storySchema = new Schema('story', {
@@ -41,7 +69,7 @@ export default store => next => action => {
   }
 
   let { endpoint } = callAPI;
-  const { schema, types } = callAPI;
+  const { method, schema, types, entity } = callAPI;
 
   if (typeof endpoint === 'function') {
     endpoint = endpoint(store.getState());
@@ -72,7 +100,7 @@ export default store => next => action => {
   const [requestType, successType, failureType] = types;
   next(actionWith({ type: requestType }));
 
-  const response = callApi(endpoint, schema);
+  const response = callApi(endpoint, method, schema, entity);
   next(actionWith({
     response,
     type: successType

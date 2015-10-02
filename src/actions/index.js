@@ -16,10 +16,6 @@ function fetchStories() {
 
 export function loadStories() {
   return (dispatch, getState) => {
-    const stories = getState().stories;
-
-    if (typeof stories !== 'undefined') return null;
-
     return dispatch(fetchStories());
   };
 }
@@ -40,10 +36,44 @@ function fetchStory(id) {
 
 export function loadStory(id) {
   return (dispatch, getState) => {
-    const story = getState().currentStory;
-
-    if (story && story.id === id) return null;
-
     return dispatch(fetchStory(id));
   }
+}
+
+export const STORY_CREATE = 'STORY_CREATE';
+
+function createStory(story) {
+  return {
+    [CALL_API]: {
+      types: [STORY_CREATE, STORY_SUCCESS, STORY_FAILURE],
+      endpoint: 'stories',
+      method: 'POST',
+      schema: Schemas.STORY,
+      entity: story
+    }
+  }
+}
+
+export const STORY_UPDATE = 'STORY_UPDATE';
+
+function updateStory(story) {
+  return {
+    [CALL_API]: {
+      types: [STORY_UPDATE, STORY_SUCCESS, STORY_FAILURE],
+      endpoint: `stories/${story.id}`,
+      method: 'PUT',
+      schema: Schemas.STORY,
+      entity: story
+    }
+  };
+}
+
+export function saveStory(story) {
+  return (dispatch, getState) => {
+    if (story.id) {
+      return dispatch(updateStory(story));
+    } else {
+      return dispatch(createStory(story));
+    }
+  };
 }
