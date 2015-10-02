@@ -19,7 +19,7 @@ class EditStoryPage extends Component {
   }
 
   handleSaveStory(story) {
-    const newStory = this.props.saveStory(Object.assign({}, this.props.story, story));
+    this.props.saveStory(Object.assign({}, this.props.story, story));
   }
 
   render() {
