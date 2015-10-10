@@ -9,6 +9,7 @@ export default class StoryEditor extends Component {
     this.state = { title: props.initialTitle, description: props.initialDescription };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDataChange = this.handleDataChange.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   handleSubmit(e) {
@@ -24,6 +25,19 @@ export default class StoryEditor extends Component {
     });
   }
 
+  handleBlur() {
+    if (!this.props.onBlur) return;
+
+    // Allow blur event to be processed and activeElement updated
+    setTimeout(() => {
+      for (let ref in this.refs) {
+        if (this.refs[ref].getDOMNode() === document.activeElement) return;
+      }
+
+      this.props.onBlur();
+    }, 0);
+  }
+
   renderSaveButton() {
     if (!this.props.autoSave) {
       return <input type="submit" value="Save" />
@@ -33,15 +47,17 @@ export default class StoryEditor extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <FormGroupInput label="Title"
-            value={this.state.title}
-            onChange={this.handleDataChange.bind(this, 'title')} />
-          <FormGroupTextarea label="Description"
-            value={this.state.description}
-            onChange={this.handleDataChange.bind(this, 'description')} />
-          {this.renderSaveButton()}
-        </form>
+        <input type="text"
+          ref="title"
+          value={this.state.title}
+          onChange={this.handleDataChange.bind(this, 'title')}
+          onBlur={this.handleBlur}
+        />
+        <textarea ref="description"
+          value={this.state.description}
+          onChange={this.handleDataChange.bind(this, 'description')}
+          onBlur={this.handleBlur}
+        />
       </div>
     );
   }
@@ -52,7 +68,8 @@ StoryEditor.propTypes = {
   initialTitle: PropTypes.string,
   initialDescription: PropTypes.string,
   autoSave: PropTypes.bool,
-  onSave: PropTypes.func.isRequired
+  onSave: PropTypes.func.isRequired,
+  onBlur: PropTypes.func
 };
 
 StoryEditor.defaultProps = {

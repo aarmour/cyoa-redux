@@ -7,9 +7,8 @@ import App from './App';
 
 // Pages
 import ListStoriesPage from './stories/ListStoriesPage';
-import ShowStoryPage from './stories/ShowStoryPage';
-import EditStoryPage from './stories/EditStoryPage';
-import EditScenarioPage from './stories/EditScenarioPage';
+import StoryPage from './stories/StoryPage';
+import ScenarioPage from './stories/ScenarioPage';
 
 const history = createBrowserHistory();
 const store = configureStore();
@@ -25,13 +24,11 @@ export default class Root extends Component {
               <Route path="stories"
                      component={ListStoriesPage} />
               <Route path="stories/new"
-                     component={EditStoryPage} />
+                     component={StoryPage} />
               <Route path="stories/:storyId"
-                     component={ShowStoryPage} />
-              <Route path="stories/:storyId/edit"
-                     component={EditStoryPage} />
-              <Route path="scenarios/:scenarioId/edit"
-                     component={EditScenarioPage} />
+                     component={StoryPage} />
+              <Route path="scenarios/:scenarioId"
+                     component={ScenarioPage} />
             </Route>
           </Router>
         }
