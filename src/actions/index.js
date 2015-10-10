@@ -51,7 +51,7 @@ function createStory(story) {
       schema: Schemas.STORY,
       entity: story
     }
-  }
+  };
 }
 
 export const STORY_UPDATE = 'STORY_UPDATE';
@@ -74,6 +74,24 @@ export function saveStory(story) {
       return dispatch(updateStory(story));
     } else {
       return dispatch(createStory(story));
+    }
+  };
+}
+
+export const SCENARIO_REQUEST = 'SCENARIO_REQUEST';
+export const SCENARIO_SUCCESS = 'SCENARIO_SUCCESS';
+export const SCENARIO_FAILURE = 'SCENARIO_FAILURE';
+
+export function loadScenario(storyId, scenarioId) {
+
+}
+
+export const SCENARIO_CREATE = 'SCENARIO_CREATE';
+
+function createScenario(scenario) {
+  return {
+    [CALL_API]: {
+      types: [SCENARIO_CREATE, SCENARIO_SUCCESS, SCENARIO_FAILURE]
     }
   };
 }

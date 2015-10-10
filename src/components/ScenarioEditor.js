@@ -40,7 +40,7 @@ export default class ScenarioEditor extends Component {
         <input type="checkbox" id={showPreviewChkId}
           checked={showPreview}
           onChange={handleShowPreviewChange} />
-        <label htmlFor={showPreviewChkId}>Show preview</label>
+        <label htmlFor={showPreviewChkId}>Preview</label>
         <MarkdownEditor value={markdown} onChange={handleEditorChange} />
         {preview}
       </div>

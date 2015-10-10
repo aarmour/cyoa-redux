@@ -30,7 +30,7 @@ export default class Root extends Component {
                      component={ShowStoryPage} />
               <Route path="stories/:storyId/edit"
                      component={EditStoryPage} />
-              <Route path="stories/:storyId/scenarios/:scenarioId/edit"
+              <Route path="scenarios/:scenarioId/edit"
                      component={EditScenarioPage} />
             </Route>
           </Router>
