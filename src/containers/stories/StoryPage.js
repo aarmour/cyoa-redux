@@ -69,7 +69,7 @@ class StoryPage extends Component {
   render() {
     const { story, route } = this.props;
 
-    if (!story.id && route.path !== 'stories/new') {
+    if (!story.id) {
       return <div>Loading...</div>
     }
 
@@ -87,10 +87,6 @@ StoryPage.propTypes = {
 StoryPage.defaultProps = {
   story: {}
 };
-
-// StoryPage.contextTypes = {
-//   router: PropTypes.func.isRequired
-// };
 
 function mapStateToProps(state, ownProps) {
   const {
