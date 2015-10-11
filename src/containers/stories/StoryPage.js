@@ -27,7 +27,7 @@ class StoryPage extends Component {
         const focusElementRef = this.refs.storyEditor.refs[focusElementRefName];
 
         if (focusElementRef) {
-          focusElementRef.getDOMNode().focus();
+          focusElementRef.focus();
         }
       }
     });

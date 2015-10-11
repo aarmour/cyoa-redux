@@ -18,20 +18,18 @@ export default class Root extends Component {
   render() {
     return (
       <Provider store={store}>
-        {() =>
-          <Router history={history}>
-            <Route path="/" component={App}>
-              <Route path="stories"
-                     component={ListStoriesPage} />
-              <Route path="stories/new"
-                     component={StoryPage} />
-              <Route path="stories/:storyId"
-                     component={StoryPage} />
-              <Route path="scenarios/:scenarioId"
-                     component={ScenarioPage} />
-            </Route>
-          </Router>
-        }
+        <Router history={history}>
+          <Route path="/" component={App}>
+            <Route path="stories"
+                   component={ListStoriesPage} />
+            <Route path="stories/new"
+                   component={StoryPage} />
+            <Route path="stories/:storyId"
+                   component={StoryPage} />
+            <Route path="scenarios/:scenarioId"
+                   component={ScenarioPage} />
+          </Route>
+        </Router>
       </Provider>
     );
   }

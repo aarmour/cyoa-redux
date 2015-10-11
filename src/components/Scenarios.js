@@ -1,15 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-export default class Scenarios extends Component {
-  render() {
-    return (
-      <ul>
-        {this.props.scenarios.map((scenario, i) =>
-          <li key={i}>{scenario.title}</li>
-        )}
-      </ul>
-    );
-  }
+export default function Scenarios(props) {
+  return (
+    <ul>
+      {props.scenarios.map((scenario, i) =>
+        <li key={i}>{scenario.title}</li>
+      )}
+    </ul>
+  );
 }
 
 Scenarios.propTypes = {

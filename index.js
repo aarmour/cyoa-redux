@@ -1,6 +1,7 @@
 import 'babel-core/polyfill';
 import 'codemirror';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Root from './src/containers/Root';
 
-React.render(<Root />, document.getElementById('root'));
+ReactDOM.render(<Root />, document.getElementById('root'));

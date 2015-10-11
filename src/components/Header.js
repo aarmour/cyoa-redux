@@ -1,9 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 
-export default class Header extends Component {
-
-  render() {
+export default function Header(props) {
     return (
       <header>
         <section>
@@ -16,6 +14,4 @@ export default class Header extends Component {
         </section>
       </header>
     );
-  }
-
 }

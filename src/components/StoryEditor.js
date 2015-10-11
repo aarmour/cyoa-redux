@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import FormGroupInput from './forms/FormGroupInput';
-import FormGroupTextarea from './forms/FormGroupTextarea';
 
 export default class StoryEditor extends Component {
 
@@ -31,7 +29,7 @@ export default class StoryEditor extends Component {
     // Allow blur event to be processed and activeElement updated
     setTimeout(() => {
       for (let ref in this.refs) {
-        if (this.refs[ref].getDOMNode() === document.activeElement) return;
+        if (this.refs[ref] === document.activeElement) return;
       }
 
       this.props.onBlur();

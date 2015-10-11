@@ -1,19 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import MarkdownIt from 'markdown-it';
 
-let markdownRenderer = new MarkdownIt();
+const markdownRenderer = new MarkdownIt();
 
-export default class MarkdownPreview extends Component {
+export default function MarkdownPreview(props) {
+  const markdown = props.markdown;
+  const preview = markdownRenderer.render(markdown);
 
-  render() {
-    const markdown = this.props.markdown;
-    const preview = markdownRenderer.render(markdown);
-
-    return (
-      <div dangerouslySetInnerHTML={{__html: preview}} />
-    );
-  }
-
+  return (
+    <div dangerouslySetInnerHTML={{__html: preview}} />
+  );
 }
 
 MarkdownPreview.propTypes = {
