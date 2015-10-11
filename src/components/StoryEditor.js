@@ -44,7 +44,7 @@ export default class StoryEditor extends Component {
 
   render() {
     return (
-      <div>
+      <form onSubmit={this.handleSubmit}>
         <input type="text"
           ref="title"
           value={this.state.title}
@@ -56,7 +56,8 @@ export default class StoryEditor extends Component {
           onChange={this.handleDataChange.bind(this, 'description')}
           onBlur={this.handleBlur}
         />
-      </div>
+        {this.renderSaveButton()}
+      </form>
     );
   }
 
