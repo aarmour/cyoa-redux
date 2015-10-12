@@ -1,5 +1,6 @@
 import merge from 'lodash.merge';
 import { combineReducers } from 'redux';
+import { routerStateReducer } from 'redux-router';
 
 // Updates an entity cache in response to any action with response.entities.
 function entities(state = {}, action) {
@@ -11,7 +12,8 @@ function entities(state = {}, action) {
 }
 
 const rootReducer = combineReducers({
-  entities
+  entities,
+  router: routerStateReducer
 });
 
 export default rootReducer;

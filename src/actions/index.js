@@ -40,16 +40,22 @@ export function loadStory(id) {
   }
 }
 
-export const STORY_CREATE = 'STORY_CREATE';
+export const STORY_CREATE_REQUEST = 'STORY_CREATE_REQUEST';
+export const STORY_CREATE_SUCCESS = 'STORY_CREATE_SUCCESS';
+export const STORY_CREATE_FAILURE = 'STORY_CREATE_FAILURE';
 
 function createStory(story) {
   return {
     [CALL_API]: {
-      types: [STORY_CREATE, STORY_SUCCESS, STORY_FAILURE],
+      types: [STORY_CREATE_REQUEST, STORY_CREATE_SUCCESS, STORY_CREATE_FAILURE],
       endpoint: 'stories',
       method: 'POST',
       schema: Schemas.STORY,
-      entity: story
+      entity: story,
+    },
+    redirect: {
+      shouldRedirect: (action) => action.response && action.response.result,
+      path: (action) => `/stories/${action.response.result}`
     }
   };
 }
