@@ -45,13 +45,17 @@ export default class StoryEditor extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input type="text"
+        <input
+          type="text"
           ref="title"
+          placeholder="Title"
           value={this.state.title}
           onChange={this.handleDataChange.bind(this, 'title')}
           onBlur={this.handleBlur}
         />
-        <textarea ref="description"
+        <textarea
+          ref="description"
+          placeholder="Description"
           value={this.state.description}
           onChange={this.handleDataChange.bind(this, 'description')}
           onBlur={this.handleBlur}

@@ -2,15 +2,18 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { loadStory, saveStory } from '../../actions';
 import StoryEditor from '../../components/StoryEditor';
+import ScenarioEditor from '../../components/ScenarioEditor';
 
 class StoryPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { editing: false };
-    this.handleStartEditingStory = this.handleStartEditingStory.bind(this);
-    this.handleFinishEditingStory = this.handleFinishEditingStory.bind(this);
+    this.state = { editingStoryDetails: false, editingScenario: false };
+    this.handleStartEditingStoryDetails = this.handleStartEditingStoryDetails.bind(this);
+    this.handleFinishEditingStoryDetails = this.handleFinishEditingStoryDetails.bind(this);
+    this.handleStartEditingScenario = this.handleStartEditingScenario.bind(this);
     this.handleSaveStory = this.handleSaveStory.bind(this);
+    this.handleSaveScenario = this.handleSaveScenario.bind(this);
   }
 
   componentDidMount() {
@@ -21,8 +24,8 @@ class StoryPage extends Component {
     }
   }
 
-  handleStartEditingStory(focusElementRefName) {
-    this.setState({ editing: true }, () => {
+  handleStartEditingStoryDetails(focusElementRefName) {
+    this.setState({ editingStoryDetails: true }, () => {
       if (focusElementRefName) {
         const focusElementRef = this.refs.storyEditor.refs[focusElementRefName];
 
@@ -33,47 +36,76 @@ class StoryPage extends Component {
     });
   }
 
-  handleFinishEditingStory() {
-    this.setState({ editing: false });
+  handleFinishEditingStoryDetails() {
+    this.setState({ editingStoryDetails: false });
+  }
+
+  handleStartEditingScenario() {
+    this.setState({ editingScenario: true });
   }
 
   handleSaveStory(story) {
     this.props.saveStory(Object.assign({}, this.props.story, story));
   }
 
-  renderViewStory() {
-    const { title, description } = this.props.story;
-
-    return (
-      <div>
-        <h3 onClick={this.handleStartEditingStory.bind(this, 'title')}>{title}</h3>
-        <p onClick={this.handleStartEditingStory.bind(this, 'description')}>{description}</p>
-      </div>
-    );
+  handleSaveScenario(scenario) {
+    this.setState({ editingScenario: false });
   }
 
-  renderEditStory() {
+  renderStoryDetails() {
     const { title, description } = this.props.story;
 
-    return (
-      <StoryEditor
-        ref="storyEditor"
-        autoSave={true}
-        initialTitle={title}
-        initialDescription={description}
-        onSave={this.handleSaveStory}
-        onBlur={this.handleFinishEditingStory} />
-    );
+    if (this.state.editingStoryDetails) {
+      return (
+        <StoryEditor
+          ref="storyEditor"
+          autoSave={true}
+          initialTitle={title}
+          initialDescription={description}
+          onSave={this.handleSaveStory}
+          onBlur={this.handleFinishEditingStoryDetails}
+        />
+      );
+    } else {
+      return (
+        <div>
+          <h3 onClick={this.handleStartEditingStoryDetails.bind(this, 'title')}>{title}</h3>
+          <p onClick={this.handleStartEditingStoryDetails.bind(this, 'description')}>{description}</p>
+        </div>
+      );
+    }
+  }
+
+  renderScenario() {
+    if (this.state.editingScenario) {
+      return (
+        <div>
+          <ScenarioEditor onSave={this.handleSaveScenario} />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <p onClick={this.handleStartEditingScenario}>SCENARIO PLACEHOLDER</p>
+        </div>
+      );
+    }
   }
 
   render() {
     const { story, route } = this.props;
+    const { editingStoryDetails, editingScenario} = this.state;
 
     if (!story.id) {
       return <div>Loading...</div>
     }
 
-    return this.state.editing ? this.renderEditStory() : this.renderViewStory();
+    return (
+      <div>
+        {this.renderStoryDetails()}
+        {this.renderScenario()}
+      </div>
+    );
   }
 
 }

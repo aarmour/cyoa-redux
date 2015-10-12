@@ -16,10 +16,12 @@ class NewStoryPage extends Component {
 
   render() {
     return (
-      <StoryEditor
-        autoSave={false}
-        onSave={this.handleSaveStory}
-      />
+      <div>
+        <StoryEditor
+          autoSave={false}
+          onSave={this.handleSaveStory}
+        />
+      </div>
     );
   }
 

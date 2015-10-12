@@ -10,6 +10,7 @@ export default class ScenarioEditor extends Component {
     this.state = { markdown: props.initialContent, showPreview: true };
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleShowPreviewChange = this.handleShowPreviewChange.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   handleEditorChange(newMarkdown) {
@@ -20,11 +21,17 @@ export default class ScenarioEditor extends Component {
     this.setState({ showPreview: e.target.checked });
   }
 
+  handleSave() {
+    const { onSave } = this.props;
+
+    if (typeof onSave === 'function') {
+      onSave(this.props.markdown);
+    }
+  }
+
   render() {
     const { markdown, showPreview } = this.state;
     const showPreviewChkId = uniqueId();
-    const handleEditorChange = this.handleEditorChange;
-    const handleShowPreviewChange = this.handleShowPreviewChange;
 
     let preview;
 
@@ -39,10 +46,14 @@ export default class ScenarioEditor extends Component {
         <input type="text" placeholder="Title" />
         <input type="checkbox" id={showPreviewChkId}
           checked={showPreview}
-          onChange={handleShowPreviewChange} />
+          onChange={this.handleShowPreviewChange} />
         <label htmlFor={showPreviewChkId}>Preview</label>
-        <MarkdownEditor value={markdown} onChange={handleEditorChange} />
+        <MarkdownEditor
+          value={markdown}
+          onChange={this.handleEditorChange}
+        />
         {preview}
+        <button onClick={this.handleSave}>Save</button>
       </div>
     );
   }
